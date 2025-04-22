@@ -1,7 +1,8 @@
-flask==3.1.0
-flask-sqlalchemy==3.1.1
-flask-login==0.6.3
-flask-wtf==1.2.1
-email-validator==2.1.0.post1
-python-dotenv==1.1.0
-flask-mail==0.10.0 
+Flask==2.3.3
+Flask-SQLAlchemy==3.1.1
+Flask-Login==0.6.2
+Flask-Mail==0.9.1
+python-dotenv==1.0.0
+Werkzeug==2.3.7
+email-validator==2.0.0
+gunicorn==21.2.0 

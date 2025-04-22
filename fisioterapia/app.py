@@ -12,7 +12,13 @@ load_dotenv()
 
 app = Flask(__name__)
 app.config['SECRET_KEY'] = os.getenv('SECRET_KEY', 'tu_clave_secreta_aqui')
-app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///fisioterapia.db'
+
+# Configuración de la base de datos para producción
+if os.getenv('RENDER'):
+    app.config['SQLALCHEMY_DATABASE_URI'] = os.getenv('DATABASE_URL').replace('postgres://', 'postgresql://')
+else:
+    app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///fisioterapia.db'
+
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 app.config['SQLALCHEMY_ECHO'] = True  # Activar logs de SQL
 
@@ -469,22 +475,26 @@ def admin_logout():
 
 # Crear la base de datos y el usuario administrador al iniciar la aplicación
 with app.app_context():
-    # Eliminar todas las tablas existentes
-    db.drop_all()
-    # Crear todas las tablas con las nuevas columnas
-    db.create_all()
-    
-    # Verificar si existe un administrador
-    admin = User.query.filter_by(username='admin@fisioterapia.com').first()
-    if not admin:
-        admin = User(username='admin@fisioterapia.com', is_admin=True)
-        admin.set_password('admin123')
-        db.session.add(admin)
-        db.session.commit()
+    try:
+        # Eliminar todas las tablas existentes
+        db.drop_all()
+        # Crear todas las tablas con las nuevas columnas
+        db.create_all()
+        
+        # Verificar si existe un administrador
+        admin = User.query.filter_by(username='admin@fisioterapia.com').first()
+        if not admin:
+            admin = User(username='admin@fisioterapia.com', is_admin=True)
+            admin.set_password('admin123')
+            db.session.add(admin)
+            db.session.commit()
+    except Exception as e:
+        print(f"Error al inicializar la base de datos: {str(e)}")
 
 if __name__ == '__main__':
     # En producción, usar un servidor WSGI como Gunicorn
-    app.run(debug=False, host='0.0.0.0', port=5000)
+    port = int(os.environ.get('PORT', 5000))
+    app.run(host='0.0.0.0', port=port, debug=False)
     
 
 

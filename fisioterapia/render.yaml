@@ -1,0 +1,23 @@
+services:
+  - type: web
+    name: fisioterapia
+    env: python
+    buildCommand: pip install -r requirements.txt
+    startCommand: gunicorn app:app
+    envVars:
+      - key: PYTHON_VERSION
+        value: 3.9.0
+      - key: SECRET_KEY
+        generateValue: true
+      - key: MAIL_SERVER
+        value: smtp.gmail.com
+      - key: MAIL_PORT
+        value: 587
+      - key: MAIL_USE_TLS
+        value: true
+      - key: MAIL_USERNAME
+        value: juahe66@gmail.com
+      - key: MAIL_PASSWORD
+        value: adnq kgox zswe ecpe
+      - key: MAIL_DEFAULT_SENDER
+        value: juahe66@gmail.com 
