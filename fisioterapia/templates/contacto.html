@@ -1,0 +1,107 @@
+{% extends "base.html" %}
+
+{% block content %}
+<div class="container mt-5">
+    <div class="row">
+        <div class="col-md-6">
+            <h2 class="display-5 fw-bold mb-4">Contáctanos</h2>
+            <p class="lead text-muted mb-5">Estamos aquí para ayudarte. Envíanos un mensaje y te responderemos lo antes posible.</p>
+            
+            <div class="contact-info card p-4 mb-4">
+                <h4 class="fw-bold mb-4">Información de Contacto</h4>
+                <div class="d-flex align-items-center mb-3">
+                    <i class="fas fa-map-marker-alt fa-2x text-primary me-3"></i>
+                    <div>
+                        <h5 class="mb-0">Dirección</h5>
+                        <p class="text-muted mb-0">Calle 26 H carrera 35-27, Medellin, Colombia</p>
+                    </div>
+                </div>
+                <div class="d-flex align-items-center mb-3">
+                    <i class="fas fa-phone fa-2x text-primary me-3"></i>
+                    <div>
+                        <h5 class="mb-0">Teléfono</h5>
+                        <p class="text-muted mb-0">+573148548624</p>
+                    </div>
+                </div>
+                <div class="d-flex align-items-center mb-3">
+                    <i class="fas fa-envelope fa-2x text-primary me-3"></i>
+                    <div>
+                        <h5 class="mb-0">Email</h5>
+                        <p class="text-muted mb-0">juahe66@gmail.com</p>
+                    </div>
+                </div>
+                <div class="d-flex align-items-center">
+                    <i class="fas fa-clock fa-2x text-primary me-3"></i>
+                    <div>
+                        <h5 class="mb-0">Horario</h5>
+                        <p class="text-muted mb-0">Lunes a Viernes 9:00 - 18:00</p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Sección de WhatsApp -->
+            <div class="whatsapp-section card p-4">
+                <h4 class="fw-bold mb-3">Contacto por WhatsApp</h4>
+                <p class="text-muted mb-4">¿Tienes alguna duda? Escríbenos directamente por WhatsApp</p>
+                <a href="https://wa.me/573148548624?text=Hola,%20me%20gustaría%20obtener%20más%20información%20sobre%20sus%20servicios" 
+                   class="btn btn-success btn-lg w-100" 
+                   target="_blank">
+                    <i class="fab fa-whatsapp me-2"></i> Chatear por WhatsApp
+                </a>
+            </div>
+        </div>
+        
+        <div class="col-md-6">
+            <div class="card p-4">
+                <h3 class="card-title fw-bold mb-4">Envíanos un Mensaje</h3>
+                <form action="{{ url_for('contacto') }}" method="POST">
+                    <div class="mb-4">
+                        <label for="nombre" class="form-label fw-bold">Nombre</label>
+                        <input type="text" class="form-control" id="nombre" name="nombre" required>
+                    </div>
+                    <div class="mb-4">
+                        <label for="email" class="form-label fw-bold">Email</label>
+                        <input type="email" class="form-control" id="email" name="email" required>
+                    </div>
+                    <div class="mb-4">
+                        <label for="telefono" class="form-label fw-bold">Teléfono</label>
+                        <input type="tel" class="form-control" id="telefono" name="telefono" required>
+                    </div>
+                    <div class="mb-4">
+                        <label for="mensaje" class="form-label fw-bold">Mensaje</label>
+                        <textarea class="form-control" id="mensaje" name="mensaje" rows="4" required></textarea>
+                    </div>
+                    <button type="submit" class="btn btn-primary btn-lg w-100">
+                        <i class="fas fa-paper-plane me-2"></i>Enviar Mensaje
+                    </button>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
+<style>
+.whatsapp-section {
+    background-color: #f8f9fa;
+}
+
+.btn-success {
+    background-color: #25D366;
+    border-color: #25D366;
+}
+
+.btn-success:hover {
+    background-color: #128C7E;
+    border-color: #128C7E;
+}
+
+.contact-info {
+    background-color: #f8f9fa;
+}
+
+.card {
+    border: none;
+    box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+}
+</style>
+{% endblock %}

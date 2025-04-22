@@ -1,0 +1,161 @@
+{% extends "admin/base.html" %}
+
+{% block content %}
+<div class="container mt-4">
+    <h2>Panel de Administración</h2>
+    
+    {% with messages = get_flashed_messages(with_categories=true) %}
+        {% if messages %}
+            {% for category, message in messages %}
+                <div class="alert alert-{{ category }}">{{ message }}</div>
+            {% endfor %}
+        {% endif %}
+    {% endwith %}
+    
+    <!-- Filtros -->
+    <div class="card mb-4">
+        <div class="card-body">
+            <form method="GET" class="row g-3">
+                <div class="col-md-3">
+                    <label for="fecha" class="form-label">Fecha</label>
+                    <input type="date" class="form-control" id="fecha" name="fecha" value="{{ fecha_filtro or '' }}">
+                </div>
+                <div class="col-md-3">
+                    <label for="estado" class="form-label">Estado</label>
+                    <select class="form-select" id="estado" name="estado">
+                        <option value="">Todos</option>
+                        <option value="confirmada" {% if estado_filtro == 'confirmada' %}selected{% endif %}>Confirmadas</option>
+                        <option value="pendiente" {% if estado_filtro == 'pendiente' %}selected{% endif %}>Pendientes</option>
+                    </select>
+                </div>
+                <div class="col-md-3">
+                    <label for="especialidad" class="form-label">Especialidad</label>
+                    <select class="form-select" id="especialidad" name="especialidad">
+                        <option value="">Todas</option>
+                        {% for especialidad in especialidades %}
+                        <option value="{{ especialidad }}" {% if especialidad_filtro == especialidad %}selected{% endif %}>{{ especialidad }}</option>
+                        {% endfor %}
+                    </select>
+                </div>
+                <div class="col-md-3 d-flex align-items-end">
+                    <button type="submit" class="btn btn-primary">Filtrar</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- Citas de Hoy -->
+    <div class="card mb-4">
+        <div class="card-header">
+            <h5 class="mb-0">Citas de Hoy</h5>
+        </div>
+        <div class="card-body">
+            {% if citas_hoy %}
+            <div class="table-responsive">
+                <table class="table table-hover">
+                    <thead>
+                        <tr>
+                            <th>Paciente</th>
+                            <th>Contacto</th>
+                            <th>Hora</th>
+                            <th>Especialidad</th>
+                            <th>Estado</th>
+                            <th>Acciones</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for cita in citas_hoy %}
+                        <tr>
+                            <td>{{ cita.nombre }}</td>
+                            <td>
+                                {{ cita.email }}<br>
+                                {{ cita.telefono }}
+                            </td>
+                            <td>{{ cita.hora.strftime('%H:%M') }}</td>
+                            <td>{{ cita.especialidad }}</td>
+                            <td>
+                                {% if cita.confirmada %}
+                                    <span class="badge bg-success">Confirmada</span>
+                                {% else %}
+                                    <span class="badge bg-warning">Pendiente</span>
+                                {% endif %}
+                            </td>
+                            <td>
+                                <div class="btn-group">
+                                    {% if not cita.confirmada %}
+                                        <a href="{{ url_for('confirmar_cita', id=cita.id) }}" class="btn btn-sm btn-success">Confirmar</a>
+                                    {% endif %}
+                                    <a href="{{ url_for('cancelar_cita', id=cita.id) }}" class="btn btn-sm btn-danger">Cancelar</a>
+                                    <a href="{{ url_for('reprogramar_cita', id=cita.id) }}" class="btn btn-sm btn-primary">Reprogramar</a>
+                                </div>
+                            </td>
+                        </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+            {% else %}
+            <p>No hay citas programadas para hoy.</p>
+            {% endif %}
+        </div>
+    </div>
+
+    <!-- Todas las Citas -->
+    <div class="card">
+        <div class="card-header">
+            <h5 class="mb-0">Todas las Citas</h5>
+        </div>
+        <div class="card-body">
+            {% if citas %}
+            <div class="table-responsive">
+                <table class="table table-hover">
+                    <thead>
+                        <tr>
+                            <th>Paciente</th>
+                            <th>Contacto</th>
+                            <th>Fecha</th>
+                            <th>Hora</th>
+                            <th>Especialidad</th>
+                            <th>Estado</th>
+                            <th>Acciones</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for cita in citas %}
+                        <tr>
+                            <td>{{ cita.nombre }}</td>
+                            <td>
+                                {{ cita.email }}<br>
+                                {{ cita.telefono }}
+                            </td>
+                            <td>{{ cita.fecha.strftime('%d/%m/%Y') }}</td>
+                            <td>{{ cita.hora.strftime('%H:%M') }}</td>
+                            <td>{{ cita.especialidad }}</td>
+                            <td>
+                                {% if cita.confirmada %}
+                                    <span class="badge bg-success">Confirmada</span>
+                                {% else %}
+                                    <span class="badge bg-warning">Pendiente</span>
+                                {% endif %}
+                            </td>
+                            <td>
+                                <div class="btn-group">
+                                    {% if not cita.confirmada %}
+                                        <a href="{{ url_for('confirmar_cita', id=cita.id) }}" class="btn btn-sm btn-success">Confirmar</a>
+                                    {% endif %}
+                                    <a href="{{ url_for('cancelar_cita', id=cita.id) }}" class="btn btn-sm btn-danger">Cancelar</a>
+                                    <a href="{{ url_for('reprogramar_cita', id=cita.id) }}" class="btn btn-sm btn-primary">Reprogramar</a>
+                                </div>
+                            </td>
+                        </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+            {% else %}
+            <p>No hay citas que coincidan con los filtros seleccionados.</p>
+            {% endif %}
+        </div>
+    </div>
+</div>
+{% endblock %} 

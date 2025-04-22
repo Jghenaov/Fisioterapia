@@ -1,0 +1,43 @@
+{% extends "base.html" %}
+
+{% block content %}
+<div class="container mt-5">
+    <div class="row">
+        <div class="col-12 text-center mb-5">
+            <h1 class="display-4">Nuestros Servicios</h1>
+            <p class="lead">Ofrecemos una amplia gama de servicios de fisioterapia para mejorar tu salud y bienestar</p>
+        </div>
+    </div>
+
+    <div class="row">
+        {% for especialidad in especialidades %}
+        <div class="col-md-6 mb-4">
+            <div class="card h-100">
+                <div class="card-body">
+                    <h3 class="card-title">{{ especialidad }}</h3>
+                    <p class="card-text">
+                        {% if especialidad == 'Rehabilitación Física' %}
+                            Tratamientos especializados para la recuperación de lesiones deportivas y post-operatorias.
+                        {% elif especialidad == 'Terapia Manual' %}
+                            Técnicas manuales para el tratamiento del dolor y la mejora de la movilidad articular.
+                        {% elif especialidad == 'Masaje Terapéutico' %}
+                            Diferentes técnicas de masaje para aliviar el dolor y la tensión muscular.
+                        {% elif especialidad == 'Fisioterapia Deportiva' %}
+                            Tratamientos específicos para deportistas y prevención de lesiones.
+                        {% elif especialidad == 'Rehabilitación Post-operatoria' %}
+                            Programas personalizados para la recuperación después de cirugías.
+                        {% elif especialidad == 'Fisioterapia Neurológica' %}
+                            Tratamientos especializados para pacientes con afecciones neurológicas.
+                        {% endif %}
+                    </p>
+                    <a href="{{ url_for('reservar') }}" class="btn btn-primary">Reservar Cita</a>
+                </div>
+            </div>
+        </div>
+        {% endfor %}
+    </div>
+</div>
+{% endblock %}
+
+
+
