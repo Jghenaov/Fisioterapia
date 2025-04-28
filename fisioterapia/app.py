@@ -60,6 +60,7 @@ class Cita(db.Model):
     nombre = db.Column(db.String(100), nullable=False)
     email = db.Column(db.String(120), nullable=False)
     telefono = db.Column(db.String(20), nullable=False)
+    direccion = db.Column(db.String(200), nullable=False)
     fecha = db.Column(db.Date, nullable=False)
     hora = db.Column(db.Time, nullable=False)
     especialidad = db.Column(db.String(100), nullable=False)
@@ -121,6 +122,10 @@ def enviar_email_confirmacion(cita):
                     <td style="padding: 10px; border: 1px solid #ddd; background-color: #f8f9fa;"><strong>Especialidad:</strong></td>
                     <td style="padding: 10px; border: 1px solid #ddd;">{cita.especialidad}</td>
                 </tr>
+                <tr>
+                    <td style="padding: 10px; border: 1px solid #ddd; background-color: #f8f9fa;"><strong>Dirección:</strong></td>
+                    <td style="padding: 10px; border: 1px solid #ddd;">{cita.direccion}</td>
+                </tr>
             </table>
             <p>Por favor, confirme su asistencia respondiendo a este correo o contactándonos por WhatsApp.</p>
             <p>Si necesita realizar algún cambio o cancelar su cita, no dude en comunicarse con nosotros.</p>
@@ -144,6 +149,7 @@ def enviar_email_confirmacion(cita):
         Fecha: {cita.fecha.strftime('%d/%m/%Y')}
         Hora: {cita.hora.strftime('%H:%M')}
         Especialidad: {cita.especialidad}
+        Dirección: {cita.direccion}
 
         Por favor, confirme su asistencia respondiendo a este correo o contactándonos por WhatsApp.
 
@@ -198,6 +204,7 @@ def reservar():
         nombre = request.form['nombre']
         email = request.form['email']
         telefono = request.form['telefono']
+        direccion = request.form['direccion']
         fecha = datetime.strptime(request.form['fecha'], '%Y-%m-%d').date()
         hora = datetime.strptime(request.form['hora'], '%H:%M').time()
         especialidad = request.form['especialidad']
@@ -210,6 +217,7 @@ def reservar():
             nombre=nombre,
             email=email,
             telefono=telefono,
+            direccion=direccion,
             fecha=fecha,
             hora=hora,
             especialidad=especialidad
@@ -232,6 +240,9 @@ def reservar():
 
 @app.route('/admin/login', methods=['GET', 'POST'])
 def admin_login():
+    if current_user.is_authenticated:
+        return redirect(url_for('admin_dashboard'))
+        
     if request.method == 'POST':
         username = request.form['username']
         password = request.form['password']
@@ -239,7 +250,10 @@ def admin_login():
         
         if user and user.check_password(password):
             login_user(user)
-            return redirect(url_for('admin_dashboard'))
+            next_page = request.args.get('next')
+            if not next_page or not next_page.startswith('/'):
+                next_page = url_for('admin_dashboard')
+            return redirect(next_page)
         flash('Credenciales inválidas', 'danger')
     
     return render_template('admin/login.html')
@@ -248,6 +262,7 @@ def admin_login():
 @login_required
 def admin_dashboard():
     if not current_user.is_admin:
+        flash('No tienes permisos de administrador', 'danger')
         return redirect(url_for('index'))
     
     # Obtener parámetros de filtro
@@ -265,9 +280,11 @@ def admin_dashboard():
     
     if estado_filtro:
         if estado_filtro == 'confirmada':
-            query = query.filter(Cita.confirmada == True)
+            query = query.filter(Cita.confirmada == True, Cita.cancelada == False)
         elif estado_filtro == 'pendiente':
-            query = query.filter(Cita.confirmada == False)
+            query = query.filter(Cita.confirmada == False, Cita.cancelada == False)
+        elif estado_filtro == 'cancelada':
+            query = query.filter(Cita.cancelada == True)
     
     if especialidad_filtro:
         query = query.filter(Cita.especialidad == especialidad_filtro)

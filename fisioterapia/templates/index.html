@@ -5,8 +5,8 @@
     <!-- Hero Section -->
     <div class="row align-items-center mb-5">
         <div class="col-md-6">
-            <h1 class="display-4 fw-bold mb-4">Bienvenido a nuestro Centro de Fisioterapia</h1>
-            <p class="lead mb-4">Ofrecemos servicios profesionales de fisioterapia para mejorar tu calidad de vida y bienestar.</p>
+            <h1 class="display-4 fw-bold mb-4">Fisioterapia a Domicilio</h1>
+            <p class="lead mb-4">Ofrecemos servicios profesionales de fisioterapia en la comodidad de tu hogar. Mejoramos tu calidad de vida y bienestar sin que tengas que desplazarte.</p>
             <div class="d-flex gap-3">
                 <a href="{{ url_for('reservar') }}" class="btn btn-primary btn-lg">
                     <i class="fas fa-calendar-check me-2"></i>Reservar Cita
@@ -19,15 +19,62 @@
         <div class="col-md-6">
             <img src="https://images.unsplash.com/photo-1576091160550-2173dba999ef?ixlib=rb-1.2.1&auto=format&fit=crop&w=500&q=60" 
                  class="img-fluid rounded-4 shadow-lg" 
-                 alt="Fisioterapia"
+                 alt="Fisioterapia a Domicilio"
                  style="max-height: 400px; object-fit: cover;">
+        </div>
+    </div>
+
+    <!-- Beneficios Section -->
+    <div class="row mt-5 mb-5">
+        <div class="col-12 text-center mb-4">
+            <h2 class="display-5 fw-bold">Beneficios de la Fisioterapia a Domicilio</h2>
+            <p class="lead text-muted">Comodidad y profesionalismo en tu hogar</p>
+        </div>
+        <div class="col-md-4 mb-4">
+            <div class="card h-100">
+                <div class="card-body p-4">
+                    <div class="text-center mb-3">
+                        <i class="fas fa-home fa-3x text-primary"></i>
+                    </div>
+                    <h5 class="card-title text-center fw-bold">Comodidad</h5>
+                    <p class="card-text text-center text-muted">
+                        Recibe atención profesional sin salir de tu hogar, evitando desplazamientos innecesarios.
+                    </p>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-4 mb-4">
+            <div class="card h-100">
+                <div class="card-body p-4">
+                    <div class="text-center mb-3">
+                        <i class="fas fa-clock fa-3x text-primary"></i>
+                    </div>
+                    <h5 class="card-title text-center fw-bold">Ahorro de Tiempo</h5>
+                    <p class="card-text text-center text-muted">
+                        Optimiza tu tiempo al recibir el tratamiento en tu hogar, sin esperas ni traslados.
+                    </p>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-4 mb-4">
+            <div class="card h-100">
+                <div class="card-body p-4">
+                    <div class="text-center mb-3">
+                        <i class="fas fa-user-md fa-3x text-primary"></i>
+                    </div>
+                    <h5 class="card-title text-center fw-bold">Atención Personalizada</h5>
+                    <p class="card-text text-center text-muted">
+                        Recibe atención individualizada en un ambiente familiar y relajado.
+                    </p>
+                </div>
+            </div>
         </div>
     </div>
 
     <!-- Servicios Section -->
     <div class="row mt-5">
         <div class="col-12 text-center mb-5">
-            <h2 class="display-5 fw-bold">Nuestros Servicios</h2>
+            <h2 class="display-5 fw-bold">Nuestros Servicios a Domicilio</h2>
             <p class="lead text-muted">Descubre nuestra amplia gama de servicios profesionales</p>
         </div>
         {% for especialidad in especialidades %}
@@ -39,7 +86,7 @@
                     </div>
                     <h5 class="card-title text-center fw-bold">{{ especialidad }}</h5>
                     <p class="card-text text-center text-muted">
-                        Servicio profesional de {{ especialidad }} para mejorar tu salud y bienestar.
+                        Servicio profesional de {{ especialidad }} en la comodidad de tu hogar.
                     </p>
                     <div class="text-center mt-3">
                         <a href="{{ url_for('reservar') }}" class="btn btn-outline-primary">
@@ -57,8 +104,8 @@
         <div class="col-12">
             <div class="card bg-primary text-white">
                 <div class="card-body p-5 text-center">
-                    <h2 class="display-6 fw-bold mb-3">¿Listo para comenzar tu tratamiento?</h2>
-                    <p class="lead mb-4">Agenda una cita hoy mismo y comienza tu camino hacia una mejor salud</p>
+                    <h2 class="display-6 fw-bold mb-3">¿Listo para recibir fisioterapia en tu hogar?</h2>
+                    <p class="lead mb-4">Agenda una cita hoy mismo y comienza tu camino hacia una mejor salud desde la comodidad de tu casa</p>
                     <a href="{{ url_for('reservar') }}" class="btn btn-light btn-lg">
                         <i class="fas fa-calendar-check me-2"></i>Reservar Ahora
                     </a>

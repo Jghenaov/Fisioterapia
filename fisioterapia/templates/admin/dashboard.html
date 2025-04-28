@@ -1,6 +1,6 @@
 {% extends "admin/base.html" %}
 
-{% block content %}
+{% block admin_content %}
 <div class="container mt-4">
     <h2>Panel de Administración</h2>
     
@@ -26,6 +26,7 @@
                         <option value="">Todos</option>
                         <option value="confirmada" {% if estado_filtro == 'confirmada' %}selected{% endif %}>Confirmadas</option>
                         <option value="pendiente" {% if estado_filtro == 'pendiente' %}selected{% endif %}>Pendientes</option>
+                        <option value="cancelada" {% if estado_filtro == 'cancelada' %}selected{% endif %}>Canceladas</option>
                     </select>
                 </div>
                 <div class="col-md-3">
@@ -57,6 +58,7 @@
                         <tr>
                             <th>Paciente</th>
                             <th>Contacto</th>
+                            <th>Dirección</th>
                             <th>Hora</th>
                             <th>Especialidad</th>
                             <th>Estado</th>
@@ -71,10 +73,13 @@
                                 {{ cita.email }}<br>
                                 {{ cita.telefono }}
                             </td>
+                            <td>{{ cita.direccion }}</td>
                             <td>{{ cita.hora.strftime('%H:%M') }}</td>
                             <td>{{ cita.especialidad }}</td>
                             <td>
-                                {% if cita.confirmada %}
+                                {% if cita.cancelada %}
+                                    <span class="badge bg-danger">Cancelada</span>
+                                {% elif cita.confirmada %}
                                     <span class="badge bg-success">Confirmada</span>
                                 {% else %}
                                     <span class="badge bg-warning">Pendiente</span>
@@ -82,11 +87,15 @@
                             </td>
                             <td>
                                 <div class="btn-group">
-                                    {% if not cita.confirmada %}
+                                    {% if not cita.confirmada and not cita.cancelada %}
                                         <a href="{{ url_for('confirmar_cita', id=cita.id) }}" class="btn btn-sm btn-success">Confirmar</a>
                                     {% endif %}
-                                    <a href="{{ url_for('cancelar_cita', id=cita.id) }}" class="btn btn-sm btn-danger">Cancelar</a>
-                                    <a href="{{ url_for('reprogramar_cita', id=cita.id) }}" class="btn btn-sm btn-primary">Reprogramar</a>
+                                    {% if not cita.cancelada %}
+                                        <a href="{{ url_for('cancelar_cita', id=cita.id) }}" class="btn btn-sm btn-danger">Cancelar</a>
+                                    {% endif %}
+                                    {% if not cita.cancelada %}
+                                        <a href="{{ url_for('reprogramar_cita', id=cita.id) }}" class="btn btn-sm btn-primary">Reprogramar</a>
+                                    {% endif %}
                                 </div>
                             </td>
                         </tr>
@@ -113,6 +122,7 @@
                         <tr>
                             <th>Paciente</th>
                             <th>Contacto</th>
+                            <th>Dirección</th>
                             <th>Fecha</th>
                             <th>Hora</th>
                             <th>Especialidad</th>
@@ -128,11 +138,14 @@
                                 {{ cita.email }}<br>
                                 {{ cita.telefono }}
                             </td>
+                            <td>{{ cita.direccion }}</td>
                             <td>{{ cita.fecha.strftime('%d/%m/%Y') }}</td>
                             <td>{{ cita.hora.strftime('%H:%M') }}</td>
                             <td>{{ cita.especialidad }}</td>
                             <td>
-                                {% if cita.confirmada %}
+                                {% if cita.cancelada %}
+                                    <span class="badge bg-danger">Cancelada</span>
+                                {% elif cita.confirmada %}
                                     <span class="badge bg-success">Confirmada</span>
                                 {% else %}
                                     <span class="badge bg-warning">Pendiente</span>
@@ -140,11 +153,15 @@
                             </td>
                             <td>
                                 <div class="btn-group">
-                                    {% if not cita.confirmada %}
+                                    {% if not cita.confirmada and not cita.cancelada %}
                                         <a href="{{ url_for('confirmar_cita', id=cita.id) }}" class="btn btn-sm btn-success">Confirmar</a>
                                     {% endif %}
-                                    <a href="{{ url_for('cancelar_cita', id=cita.id) }}" class="btn btn-sm btn-danger">Cancelar</a>
-                                    <a href="{{ url_for('reprogramar_cita', id=cita.id) }}" class="btn btn-sm btn-primary">Reprogramar</a>
+                                    {% if not cita.cancelada %}
+                                        <a href="{{ url_for('cancelar_cita', id=cita.id) }}" class="btn btn-sm btn-danger">Cancelar</a>
+                                    {% endif %}
+                                    {% if not cita.cancelada %}
+                                        <a href="{{ url_for('reprogramar_cita', id=cita.id) }}" class="btn btn-sm btn-primary">Reprogramar</a>
+                                    {% endif %}
                                 </div>
                             </td>
                         </tr>
